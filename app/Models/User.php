@@ -11,6 +11,11 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    public function entidade()
+    {
+        return $this->hasOne(Entidade::class, 'user_id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

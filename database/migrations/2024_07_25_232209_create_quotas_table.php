@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('quotas', function (Blueprint $table) {
             $table->id();
+            $table->date('data_emissao');
+            $table->date('data_pagamento');
+            $table->decimal('valor', 8, 2);
+            $table->enum('estado', ['Pago', 'Não Pago'])->default('Não Pago');
             $table->timestamps();
         });
     }
