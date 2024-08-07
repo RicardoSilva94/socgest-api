@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\StorequotaRequest;
-use App\Http\Requests\UpdatequotaRequest;
-use App\Models\quota;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoresocioRequest;
+use App\Http\Requests\UpdatesocioRequest;
+use App\Models\socio;
 
-class QuotaController extends Controller
+class SocioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class QuotaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorequotaRequest $request)
+    public function store(StoresocioRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class QuotaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(quota $quota)
+    public function show(socio $socio)
     {
         //
     }
@@ -43,7 +44,7 @@ class QuotaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(quota $quota)
+    public function edit(socio $socio)
     {
         //
     }
@@ -51,7 +52,7 @@ class QuotaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatequotaRequest $request, quota $quota)
+    public function update(UpdatesocioRequest $request, socio $socio)
     {
         //
     }
@@ -59,7 +60,7 @@ class QuotaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(quota $quota)
+    public function destroy(socio $socio)
     {
         //
     }

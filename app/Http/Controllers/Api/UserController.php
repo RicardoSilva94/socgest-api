@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\StoresocioRequest;
-use App\Http\Requests\UpdatesocioRequest;
-use App\Models\socio;
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\Request;
 
-class SocioController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return User::all();
     }
 
     /**
@@ -27,7 +27,7 @@ class SocioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoresocioRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class SocioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(socio $socio)
+    public function show(string $id)
     {
         //
     }
@@ -43,7 +43,7 @@ class SocioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(socio $socio)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +51,7 @@ class SocioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatesocioRequest $request, socio $socio)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +59,7 @@ class SocioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(socio $socio)
+    public function destroy(string $id)
     {
         //
     }

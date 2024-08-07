@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\StorenotificacaoRequest;
-use App\Http\Requests\UpdatenotificacaoRequest;
-use App\Models\notificacao;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreentidadeRequest;
+use App\Http\Requests\UpdateentidadeRequest;
+use App\Models\entidade;
 
-class NotificacaoController extends Controller
+class EntidadeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class NotificacaoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorenotificacaoRequest $request)
+    public function store(StoreentidadeRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class NotificacaoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(notificacao $notificacao)
+    public function show(entidade $entidade)
     {
         //
     }
@@ -43,7 +44,7 @@ class NotificacaoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(notificacao $notificacao)
+    public function edit(entidade $entidade)
     {
         //
     }
@@ -51,7 +52,7 @@ class NotificacaoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatenotificacaoRequest $request, notificacao $notificacao)
+    public function update(UpdateentidadeRequest $request, entidade $entidade)
     {
         //
     }
@@ -59,7 +60,7 @@ class NotificacaoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(notificacao $notificacao)
+    public function destroy(entidade $entidade)
     {
         //
     }
