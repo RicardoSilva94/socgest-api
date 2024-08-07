@@ -12,6 +12,6 @@ class EntidadeSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Entidade::factory()->count(10)->create(); // Cria 10 entidades
     }
 }

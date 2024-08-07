@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreentidadeRequest;
 use App\Http\Requests\UpdateentidadeRequest;
-use App\Models\entidade;
+use App\Http\Resources\EntidadeResource;
+use App\Models\Entidade;
 
 class EntidadeController extends Controller
 {
@@ -14,7 +15,7 @@ class EntidadeController extends Controller
      */
     public function index()
     {
-        //
+        return EntidadeResource::collection(entidade::all());
     }
 
     /**
