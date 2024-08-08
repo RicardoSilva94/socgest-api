@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorequotaRequest;
 use App\Http\Requests\UpdatequotaRequest;
-use App\Models\quota;
+use App\Models\Quota;
+use App\Http\Resources\QuotaResource;
 
 class QuotaController extends Controller
 {
@@ -14,7 +15,7 @@ class QuotaController extends Controller
      */
     public function index()
     {
-        //
+        return QuotaResource::collection(Quota::with('socio')->get());
     }
 
     /**
@@ -36,9 +37,10 @@ class QuotaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(quota $quota)
+    public function show($id)
     {
-        //
+        $quota = Quota::with('socio')->findOrFail($id);
+        return new QuotaResource($quota);
     }
 
     /**

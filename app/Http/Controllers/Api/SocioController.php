@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoresocioRequest;
 use App\Http\Requests\UpdatesocioRequest;
-use App\Models\socio;
+use App\Models\Socio;
+use App\Http\Resources\SocioResource;
 
 class SocioController extends Controller
 {
@@ -14,7 +15,7 @@ class SocioController extends Controller
      */
     public function index()
     {
-        //
+        return SocioResource::collection(Socio::with('entidade')->get());
     }
 
     /**
@@ -30,15 +31,16 @@ class SocioController extends Controller
      */
     public function store(StoresocioRequest $request)
     {
-        //
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(socio $socio)
+    public function show($id)
     {
-        //
+        $socio = Socio::with('entidade')->findOrFail($id);
+        return new SocioResource($socio);
     }
 
     /**

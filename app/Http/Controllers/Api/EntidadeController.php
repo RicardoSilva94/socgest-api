@@ -39,7 +39,7 @@ class EntidadeController extends Controller
      */
     public function show(entidade $entidade)
     {
-        //
+        return new EntidadeResource(entidade::where('id', $entidade)->first());
     }
 
     /**

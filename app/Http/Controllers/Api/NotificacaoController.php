@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorenotificacaoRequest;
 use App\Http\Requests\UpdatenotificacaoRequest;
-use App\Models\notificacao;
+use App\Models\Notificacao;
+use App\Http\Resources\NotificacaoResource;
 
 class NotificacaoController extends Controller
 {
@@ -14,7 +15,7 @@ class NotificacaoController extends Controller
      */
     public function index()
     {
-        //
+        return NotificacaoResource::collection(Notificacao::with(['quota', 'socio'])->get());
     }
 
     /**
@@ -36,9 +37,10 @@ class NotificacaoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(notificacao $notificacao)
+    public function show($id)
     {
-        //
+        $notificacao = Notificacao::with(['quota', 'socio'])->findOrFail($id);
+        return new NotificacaoResource($notificacao);
     }
 
     /**
