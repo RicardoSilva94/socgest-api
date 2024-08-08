@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Quota;
 
 class QuotaSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class QuotaSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Quota::factory()->count(100)->create(); // Cria 100 quotas
     }
 }

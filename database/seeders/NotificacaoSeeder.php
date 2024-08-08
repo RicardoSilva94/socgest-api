@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Notificacao;
 
 class NotificacaoSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class NotificacaoSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Notificacao::factory()->count(10)->create();
     }
 }

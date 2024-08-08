@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Socio;
 
 class SocioSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class SocioSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Socio::factory(10)->create();
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Notificacao extends Model
 {
     use HasFactory;
+    protected $table = 'notificacoes';
 
     public function quota()
     {
