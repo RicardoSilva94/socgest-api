@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\EntidadeController;
 use App\Http\Controllers\Api\SocioController;
 use App\Http\Controllers\Api\QuotaController;
 use App\Http\Controllers\Api\NotificacaoController;
+use App\Http\Controllers\Api\AuthController;
 
 //Route::get('/user', function (Request $request) {
 //    return $request->user();
@@ -23,3 +24,6 @@ Route::get('/quotas', [QuotaController::class, 'index']);
 Route::get('/quotas/{id}', [QuotaController::class, 'show']);
 Route::get('/notificacoes', [NotificacaoController::class, 'index']);
 Route::get('/notificacoes/{id}', [NotificacaoController::class, 'show']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+

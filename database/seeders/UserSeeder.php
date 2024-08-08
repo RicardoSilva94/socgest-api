@@ -13,7 +13,8 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        // Criar 10 users ficticios
-        User::factory()->count(10)->create();
+        User::factory()->create([
+            'email' => 'ricardo@example.com',
+            'password' => bcrypt('password')]);
     }
 }
