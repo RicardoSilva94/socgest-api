@@ -31,7 +31,25 @@ class SocioController extends Controller
      */
     public function store(StoresocioRequest $request)
     {
+        // Validação dos dados recebidos
+        $validatedData = $request->validate([
+            'nome' => 'required|string|max:255',
+            'nif' => 'required|string|max:9|unique:socios,nif',
+            'telefone' => 'nullable|string|max:20',
+            'email' => 'required|email|unique:socios,email',
+            'morada' => 'nullable|string|max:255',
+            'estado' => 'required|string|max:255',
+            'notas' => 'nullable|string',
+            'entidade_id' => 'required|exists:entidades,id', // Certifique-se que a entidade existe
+        ]);
 
+        // Criação do novo sócio
+        $socio = Socio::create($validatedData);
+
+        return response()->json([
+            'message' => 'Sócio criado com sucesso!',
+            'socio' => $socio
+        ], 201);
     }
 
     /**

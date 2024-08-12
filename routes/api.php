@@ -24,10 +24,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/change-name', [UserController::class, 'changeName']);
     Route::post('/change-password', [UserController::class, 'changePassword']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/entidades', [EntidadeController::class, 'store']);
 });
 
 Route::get('/entidades', [EntidadeController::class, 'index']);
-Route::get('/entidades/{id}', [EntidadeController::class, 'show']);
+Route::get('/entidades/{entidade}', [EntidadeController::class, 'show']);
 Route::get('/socios', [SocioController::class, 'index']);
 Route::get('/socios/{id}', [SocioController::class, 'show']);
 Route::post('/socios', [SocioController::class, 'store']);
