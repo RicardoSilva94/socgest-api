@@ -20,6 +20,10 @@ use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/change-name', [UserController::class, 'changeName']);
+});
+
 Route::get('/entidades', [EntidadeController::class, 'index']);
 Route::get('/entidades/{id}', [EntidadeController::class, 'show']);
 Route::get('/socios', [SocioController::class, 'index']);
