@@ -25,6 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/change-password', [UserController::class, 'changePassword']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/entidades', [EntidadeController::class, 'store']);
+    Route::put('/entidades/{entidade}', [EntidadeController::class, 'update']);
+    Route::delete('/entidades/{entidade}', [EntidadeController::class, 'destroy']);
 });
 
 Route::get('/entidades', [EntidadeController::class, 'index']);
