@@ -9,6 +9,17 @@ class Quota extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'tipo',
+        'periodo',
+        'descricao',
+        'valor',
+        'data_emissao',
+        'data_pagamento',
+        'estado',
+        'socio_id',
+    ];
+
     public function notificacoes()
     {
         return $this->hasMany(Notificacao::class, 'quota_id');

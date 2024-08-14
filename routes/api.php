@@ -32,13 +32,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/socios/{socio}', [SocioController::class, 'update']);
     Route::delete('/socios/{socio}', [SocioController::class, 'destroy']);
     Route::get('/socios', [SocioController::class, 'index']);
+    Route::post('/quotas/emitir', [QuotaController::class, 'emitirQuotas']);
+    Route::post('/quotas/{id}', [QuotaController::class, 'marcarComoPaga']);
+    Route::get('/quotas', [QuotaController::class, 'index']);
+    Route::get('/quotas/{id}', [QuotaController::class, 'show']);
+    Route::delete('quotas/{id}', [QuotaController::class, 'destroy']);
 });
 
 Route::get('/entidades', [EntidadeController::class, 'index']);
 Route::get('/entidades/{entidade}', [EntidadeController::class, 'show']);
 Route::get('/socios/{id}', [SocioController::class, 'show']);
-Route::get('/quotas', [QuotaController::class, 'index']);
-Route::get('/quotas/{id}', [QuotaController::class, 'show']);
+
 Route::get('/notificacoes', [NotificacaoController::class, 'index']);
 Route::get('/notificacoes/{id}', [NotificacaoController::class, 'show']);
 Route::post('/login', [AuthController::class, 'login']);
