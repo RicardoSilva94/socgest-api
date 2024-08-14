@@ -65,10 +65,28 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Utilizador não autenticado.'], 403);
+        }
+
+        // Apaga a entidade associada ao user, se houver
+        if ($user->entidade) {
+            $user->entidade->delete();
+        }
+
+        // Remove o user
+        $user->delete();
+
+        // Invalida o token do utilizador para garantir que ele seja desconectado
+        $request->user()->tokens()->delete();
+
+        return response()->json(['message' => 'A sua conta foi eliminada com sucesso.'], 200);
     }
+
 
     public function changeName(Request $request)
     {
