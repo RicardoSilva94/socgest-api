@@ -7,15 +7,34 @@ use App\Http\Requests\StoresocioRequest;
 use App\Http\Requests\UpdatesocioRequest;
 use App\Models\Socio;
 use App\Http\Resources\SocioResource;
+use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
+
 
 class SocioController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return SocioResource::collection(Socio::with('entidade')->get());
+        // Obtém o usuário logado
+        $user = auth()->user();
+
+        // Obtém a entidade associada ao usuário
+        $entidade = $user->entidade;
+
+        if (!$entidade) {
+            return response()->json(['error' => 'Você não tem uma entidade associada.'], 403);
+        }
+
+        // Busca os sócios associados à entidade do usuário
+        $socios = Socio::where('entidade_id', $entidade->id)->get();
+
+        // Retorna a lista de sócios em formato JSON
+        return response()->json([
+            'socios' => $socios
+        ], 200);
     }
 
     /**
@@ -34,16 +53,27 @@ class SocioController extends Controller
         // Validação dos dados recebidos
         $validatedData = $request->validate([
             'nome' => 'required|string|max:255',
-            'nif' => 'required|string|max:9|unique:socios,nif',
+            'nif' => 'nullable|string|max:9|unique:socios,nif',
             'telefone' => 'nullable|string|max:20',
-            'email' => 'required|email|unique:socios,email',
+            'email' => 'nullable|email|unique:socios,email',
             'morada' => 'nullable|string|max:255',
-            'estado' => 'required|string|max:255',
+            'estado' => 'nullable|string|max:255',
             'notas' => 'nullable|string',
-            'entidade_id' => 'required|exists:entidades,id', // Certifique-se que a entidade existe
+            'entidade_id' => 'required|exists:entidades,id',
         ]);
 
-        // Criação do novo sócio
+        // Obtém o último num_socio para a entidade específica
+        $lastSocio = Socio::where('entidade_id', $request->entidade_id)
+            ->orderBy('num_socio', 'desc')
+            ->first();
+
+        // Define o novo num_socio incrementando o último encontrado, ou 1 se não houver sócios
+        $newNumSocio = $lastSocio ? $lastSocio->num_socio + 1 : 1;
+
+        // Adiciona o novo num_socio aos dados validados
+        $validatedData['num_socio'] = $newNumSocio;
+
+        // Criação do novo sócio com o num_socio incrementado
         $socio = Socio::create($validatedData);
 
         return response()->json([
@@ -51,6 +81,7 @@ class SocioController extends Controller
             'socio' => $socio
         ], 201);
     }
+
 
     /**
      * Display the specified resource.
@@ -74,14 +105,91 @@ class SocioController extends Controller
      */
     public function update(UpdatesocioRequest $request, socio $socio)
     {
-        //
+        // Verifica se o sócio pertence à entidade do usuário logado
+        $user = auth()->user();
+        $entidade = $user->entidade;
+        if (!$entidade) {
+            return response()->json(['error' => 'Você não tem uma entidade associada.'], 403);
+        }
+
+        if ($socio->entidade_id !== $entidade->id) {
+            return response()->json([
+                'error' => 'Você não tem permissão para editar este sócio.',
+                'socio_entidade_id' => $socio->entidade_id,
+                'user_entidade_id' => $entidade->id
+            ], 403);
+        }
+
+        // Validação dos dados de atualização
+        $validatedData = $request->validate([
+            'nome' => 'sometimes|required|string|max:255',
+            'email' => [
+                'sometimes',
+                'nullable',
+                'email',
+                Rule::unique('socios', 'email')->ignore($socio->id),
+            ],
+            'telefone' => 'nullable|string|max:20',
+            'morada' => 'nullable|string|max:255',
+            'nif' => [
+                'sometimes',
+                'nullable',
+                'string',
+                'max:9',
+                Rule::unique('socios', 'nif')->ignore($socio->id),
+            ],
+            'num_socio' => [
+                'sometimes',
+                'required',
+                'integer',
+                Rule::unique('socios', 'num_socio')->ignore($socio->id),
+            ],
+            'estado' => [
+                'sometimes',
+                'nullable',
+                Rule::in(['Activo', 'Expulso', 'Suspenso', 'Faleceu', 'Desistiu'])
+            ],
+            'notas' => 'nullable|string|max:5000',
+        ]);
+
+        // Atualiza os dados do sócio
+        $socio->update($validatedData);
+
+        // Retorna resposta JSON
+        return response()->json([
+            'message' => 'Sócio atualizado com sucesso!',
+            'socio' => $socio
+        ], 200);
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(socio $socio)
     {
-        //
+            // Verifica se o sócio pertence à entidade do user logado
+            $user = auth()->user();
+            $entidade = $user->entidade; // Obtém a entidade associada ao user
+
+            if (!$entidade) {
+                return response()->json(['error' => 'Você não tem uma entidade associada.'], 403);
+            }
+
+            if ($socio->entidade_id !== $entidade->id) {
+                return response()->json([
+                    'error' => 'Você não tem permissão para excluir este sócio.',
+                    'socio_entidade_id' => $socio->entidade_id,
+                    'user_entidade_id' => $entidade->id
+                ], 403);
+            }
+
+            // Exclui o sócio
+            $socio->delete();
+
+            // Retorna uma resposta de sucesso
+            return response()->json([
+                'message' => 'Sócio excluído com sucesso!'
+            ], 200);
     }
 }

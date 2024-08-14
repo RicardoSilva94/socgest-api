@@ -27,13 +27,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/entidades', [EntidadeController::class, 'store']);
     Route::put('/entidades/{entidade}', [EntidadeController::class, 'update']);
     Route::delete('/entidades/{entidade}', [EntidadeController::class, 'destroy']);
+    Route::post('/socios', [SocioController::class, 'store']);
+    Route::put('/socios/{socio}', [SocioController::class, 'update']);
+    Route::delete('/socios/{socio}', [SocioController::class, 'destroy']);
+    Route::get('/socios', [SocioController::class, 'index']);
 });
 
 Route::get('/entidades', [EntidadeController::class, 'index']);
 Route::get('/entidades/{entidade}', [EntidadeController::class, 'show']);
-Route::get('/socios', [SocioController::class, 'index']);
 Route::get('/socios/{id}', [SocioController::class, 'show']);
-Route::post('/socios', [SocioController::class, 'store']);
 Route::get('/quotas', [QuotaController::class, 'index']);
 Route::get('/quotas/{id}', [QuotaController::class, 'show']);
 Route::get('/notificacoes', [NotificacaoController::class, 'index']);
