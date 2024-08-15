@@ -7,9 +7,60 @@ use App\Http\Requests\StorenotificacaoRequest;
 use App\Http\Requests\UpdatenotificacaoRequest;
 use App\Models\Notificacao;
 use App\Http\Resources\NotificacaoResource;
+use App\Mail\QuotaOverdueNotification;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Socio;
+use App\Models\Quota;
+use App\Models\Entidade;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class NotificacaoController extends Controller
 {
+
+    public function sendQuotaNotifications(Request $request)
+    {
+        $quotaIds = $request->input('quota_ids', []);
+
+        // Buscar quotas com sócio e entidade relacionados
+        $quotas = Quota::whereIn('id', $quotaIds)
+            ->where('estado', 'Não Pago')
+            ->with('socio.entidade') // Carregar a entidade relacionada
+            ->get();
+
+        Log::info('Quotas carregadas:', $quotas->toArray());
+
+        foreach ($quotas as $quota) {
+            $socio = $quota->socio; // O sócio já tem a entidade carregada
+
+            // Verificar se a entidade está carregada
+            if ($socio->entidade) {
+                Log::info('Entidade carregada:', [
+                    'entidade_id' => $socio->entidade->id,
+                    'entidade_nome' => $socio->entidade->nome,
+
+                ]);
+            } else {
+                Log::warning('Entidade não carregada para o sócio:', ['socio_id' => $socio->id]);
+            }
+
+            try {
+                Mail::to($socio->email)
+                    ->cc($socio->entidade->email)
+                    ->send(new QuotaOverdueNotification($socio, $quota));
+            } catch (\Exception $e) {
+                Log::error("Erro ao enviar e-mail para {$socio->email}: " . $e->getMessage());
+            }
+        }
+
+        return response()->json(['message' => 'Notificações enviadas com sucesso.']);
+    }
+
+
+
+
+
+
     /**
      * Display a listing of the resource.
      */

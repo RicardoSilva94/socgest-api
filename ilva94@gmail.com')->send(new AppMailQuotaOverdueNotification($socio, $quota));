@@ -1,0 +1,14 @@
+[90m= [39m[34;4mApp\Models\Quota[39;24m {#5064
+    [34mid[39m: [35m224[39m,
+    [34msocio_id[39m: [35m51[39m,
+    [34mtipo[39m: "[32mAnual[39m",
+    [34mperiodo[39m: "[32mAno 2024[39m",
+    [34mdata_emissao[39m: "[32m2024-08-14[39m",
+    [34mdata_pagamento[39m: "[32m2024-08-15[39m",
+    [34mvalor[39m: "[32m50.00[39m",
+    [34mdescricao[39m: "[32mQuota referente ao ano de 2024[39m",
+    [34mestado[39m: "[32mNão Pago[39m",
+    [34mcreated_at[39m: "[32m2024-08-14 19:31:17[39m",
+    [34mupdated_at[39m: "[32m2024-08-14 19:31:17[39m",
+  }
+

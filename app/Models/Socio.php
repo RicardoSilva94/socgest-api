@@ -21,17 +21,17 @@ class Socio extends Model
         'entidade_id',
     ];
 
-    public function entidade()
+    public function entidade(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Entidade::class, 'entidade_id');
     }
 
-    public function notificacoes()
+    public function notificacoes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Notificacao::class, 'socio_id');
     }
 
-    public function quotas()
+    public function quotas(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Quota::class, 'socio_id');
     }

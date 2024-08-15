@@ -20,13 +20,15 @@ class Entidade extends Model
         'valor_quota',
         'user_id',
     ];
+    private mixed $nome;
 
-    public function user()
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function socios()
+    public function socios(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Socio::class, 'entidade_id');
     }

@@ -20,11 +20,13 @@ class Quota extends Model
         'socio_id',
     ];
 
-    public function notificacoes()
+    protected $dates = ['data_pagamento'];
+
+    public function notificacoes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Notificacao::class, 'quota_id');
     }
-    public function socio()
+    public function socio(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Socio::class, 'socio_id');
     }

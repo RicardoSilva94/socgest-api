@@ -14,7 +14,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasApiTokens, CanResetPasswordTrait;
 
 
-    public function entidade()
+    public function entidade(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Entidade::class, 'user_id');
     }

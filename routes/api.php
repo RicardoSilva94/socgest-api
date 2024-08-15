@@ -13,6 +13,10 @@ use App\Http\Controllers\Api\QuotaController;
 use App\Http\Controllers\Api\NotificacaoController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
+use App\Mail\QuotaOverdueNotification;
+use App\Models\Socio;
+use App\Models\Quota;
+use Illuminate\Support\Facades\Mail;
 
 //Route::get('/user', function (Request $request) {
 //    return $request->user();
@@ -37,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/quotas', [QuotaController::class, 'index']);
     Route::get('/quotas/{id}', [QuotaController::class, 'show']);
     Route::delete('quotas/{id}', [QuotaController::class, 'destroy']);
+    Route::Post('/notificacoes/send', [NotificacaoController::class, 'sendQuotaNotifications']);
 });
 
 Route::get('/entidades', [EntidadeController::class, 'index']);
@@ -78,3 +83,5 @@ Route::post('/reset-password', function (Request $request) {
         ? response()->json(['status' => __($status)], 200)
         : response()->json(['email' => [__($status)]], 400);
 })->middleware('guest')->name('password.update');
+
+
