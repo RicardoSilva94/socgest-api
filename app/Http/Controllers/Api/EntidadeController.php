@@ -105,9 +105,18 @@ class EntidadeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Entidade $entidade)
+    public function show($userId)
     {
-        return new EntidadeResource($entidade);
+        // Busca a entidade associada ao usuário
+        $entidade = Entidade::where('user_id', $userId)->first();
+
+        // Verifica se a entidade existe
+        if (!$entidade) {
+            return response()->json(['message' => 'Entidade não encontrada'], 404);
+        }
+
+        // Retorna a entidade encontrada
+        return response()->json($entidade, 200);
     }
 
     /**

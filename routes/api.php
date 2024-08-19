@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('quotas/{id}', [QuotaController::class, 'destroy']);
     Route::Post('/notificacoes/send', [NotificacaoController::class, 'sendQuotaNotifications']);
     Route::get('/entidades', [EntidadeController::class, 'index']);
-    Route::get('/entidades/{entidade}', [EntidadeController::class, 'show']);
+    Route::get('/entidades/{userId}', [EntidadeController::class, 'show']);
     Route::get('/socios/{id}', [SocioController::class, 'show']);
     Route::get('/notificacoes', [NotificacaoController::class, 'index']);
     Route::get('/notificacoes/{id}', [NotificacaoController::class, 'show']);
