@@ -21,6 +21,10 @@ class UserController extends Controller
         $users = User::with('entidade')->get();
         return UserResource::collection($users);
     }
+    public function getCurrentUser(Request $request)
+    {
+        return new UserResource($request->user());
+    }
 
     /**
      * Show the form for creating a new resource.

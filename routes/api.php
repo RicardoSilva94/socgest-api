@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\QuotaController;
 use App\Http\Controllers\Api\NotificacaoController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Mail\QuotaOverdueNotification;
 use App\Models\Socio;
 use App\Models\Quota;
@@ -42,14 +43,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/quotas/{id}', [QuotaController::class, 'show']);
     Route::delete('quotas/{id}', [QuotaController::class, 'destroy']);
     Route::Post('/notificacoes/send', [NotificacaoController::class, 'sendQuotaNotifications']);
+    Route::get('/entidades', [EntidadeController::class, 'index']);
+    Route::get('/entidades/{entidade}', [EntidadeController::class, 'show']);
+    Route::get('/socios/{id}', [SocioController::class, 'show']);
+    Route::get('/notificacoes', [NotificacaoController::class, 'index']);
+    Route::get('/notificacoes/{id}', [NotificacaoController::class, 'show']);
+    Route::get('/user', [UserController::class, 'getCurrentUser']);
 });
 
-Route::get('/entidades', [EntidadeController::class, 'index']);
-Route::get('/entidades/{entidade}', [EntidadeController::class, 'show']);
-Route::get('/socios/{id}', [SocioController::class, 'show']);
 
-Route::get('/notificacoes', [NotificacaoController::class, 'index']);
-Route::get('/notificacoes/{id}', [NotificacaoController::class, 'show']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
@@ -59,29 +61,8 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
     ->name('password.email');
 
 
-Route::post('/reset-password', function (Request $request) {
-    $request->validate([
-        'token' => 'required',
-        'email' => 'required|email',
-        'password' => 'required|min:8|confirmed',
-    ]);
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])
+    ->middleware('guest')
+    ->name('password.update');
 
-    $status = Password::reset(
-        $request->only('email', 'password', 'password_confirmation', 'token'),
-        function ($user, $password) {
-            $user->forceFill([
-                'password' => Hash::make($password)
-            ])->setRememberToken(Str::random(60));
-
-            $user->save();
-
-            event(new PasswordReset($user));
-        }
-    );
-
-    return $status === Password::PASSWORD_RESET
-        ? response()->json(['status' => __($status)], 200)
-        : response()->json(['email' => [__($status)]], 400);
-})->middleware('guest')->name('password.update');
-
-
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'validateToken'])->name('password.reset');

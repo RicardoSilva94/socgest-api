@@ -122,5 +122,24 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+    [
+
+        // Outras configurações...
+
+        /*
+        |--------------------------------------------------------------------------
+        | Frontend URL
+        |--------------------------------------------------------------------------
+        |
+        | Esta URL será usada para gerar links que devem apontar para o frontend da
+        | aplicação, como o link de redefinição de senha. Defina esta URL de acordo
+        | com a configuração do seu ambiente.
+        |
+        */
+
+        'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
+
+        // Outras configurações...
+    ],
 
 ];
