@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
 class EntidadeController extends Controller
 {
@@ -30,45 +31,76 @@ class EntidadeController extends Controller
     {
         //
     }
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreentidadeRequest $request)
+    public function store(Request $request)
     {
-        // TODO - Corrigir erros. Quando tentou criar segunda entidade para o mesmo user, não devolve erro.
-        Log::info('A requisição chegou ao método store');
-        try {
-            // Valida os dados da solicitação com base nas regras definidas no StoreentidadeRequest
-            $validatedData = $request->validated();
 
-            // Processa o upload do logotipo se houver
+        // Validar os dados manualmente
+        try {
+            $validatedData = $request->validate([
+                'nome' => 'required|string|max:255',
+                'logotipo' => 'nullable|image',
+                'nif' => 'required|string|max:9|unique:entidades,nif',
+                'email' => 'required|email|unique:entidades,email',
+                'telefone' => 'nullable|string|max:20',
+                'morada' => 'nullable|string|max:255',
+                'tipo_quota' => [
+                    'required',
+                    Rule::in(['Anual', 'Mensal'])
+                ],
+                'valor_quota' => [
+                    'required',
+                    'numeric',
+                    'regex:/^\d+(\.\d{1,2})?$/'
+                ],
+                'user_id' => [
+                    'required',
+                    'exists:users,id',
+                    Rule::unique('entidades', 'user_id')
+                ],
+            ]);
+
+            // Verificar se o user já tem uma entidade associada
+            $usuarioAtual = Auth::user();
+            if ($usuarioAtual->entidade()->exists()) {
+                Log::warning('O utilizador já tem uma entidade associada.');
+                return response()->json([
+                    'message' => 'Você já possui uma entidade associada. Não é permitido criar mais de uma.',
+                ], 403);
+            }
+
+            // Processar o logotipo, se houver
             if ($request->hasFile('logotipo')) {
                 $logotipoPath = $request->file('logotipo')->store('logotipos', 'public');
                 $validatedData['logotipo'] = $logotipoPath;
             }
 
-            // Cria a nova entidade
+            // Adicionar o user_id aos dados validados
+            $validatedData['user_id'] = $usuarioAtual->id;
+
+            // Criar a nova entidade
             $entidade = Entidade::create($validatedData);
 
-            // Retorna uma resposta JSON
             return response()->json([
                 'message' => 'Entidade criada com sucesso!',
                 'entidade' => $entidade
             ], 201);
-            Log::info('A requisição saiu da validação');
+
         } catch (ValidationException $e) {
-            // Log dos erros de validação e retornar a resposta JSON com o código 422
-            Log::error('Validation Error: ', $e->errors());
+            Log::error('Erro de validação: ', $e->errors());
             return response()->json([
                 'message' => 'Erro de validação',
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
-            // Log de outros erros e retorno de uma resposta de erro genérica
-            Log::error('Erro na criação de entidade: ' . $e->getMessage());
+            Log::error('Erro ao criar entidade: ' . $e->getMessage());
             return response()->json(['message' => 'Erro ao criar a entidade.'], 500);
         }
     }
+
 
     /**
      * Display the specified resource.

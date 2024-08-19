@@ -21,13 +21,13 @@ return new class extends Migration
             $table->string('morada');
             $table->enum('tipo_quota', ['Anual', 'Mensal']);
             $table->decimal('valor_quota', 8, 2);
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('user_id')->unique();
             $table->timestamps();
         });
 
         // Definir a chave estrangeira após a tabela ser criada
         Schema::table('entidades', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

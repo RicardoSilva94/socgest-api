@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
 use App\Notifications\CustomResetPasswordNotification;
 
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens, CanResetPasswordTrait;

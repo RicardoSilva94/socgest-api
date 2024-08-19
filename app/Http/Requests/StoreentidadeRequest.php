@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Models\Entidade;
+use Illuminate\Support\Facades\Log;
 
 class StoreentidadeRequest extends FormRequest
 {
@@ -23,6 +24,7 @@ class StoreentidadeRequest extends FormRequest
      */
     public function rules(): array
     {
+        Log::info('Aplicando regras de validação');
         return [
             'nome' => 'required|string|max:255',
             'logotipo' => 'nullable|image',
