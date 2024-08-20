@@ -41,11 +41,11 @@ class CustomResetPasswordNotification extends Notification
         $resetUrl = $this->resetUrl($notifiable);
 
         return (new MailMessage)
-            ->subject('Redefinição de Senha')
-            ->line('Você está recebendo este e-mail porque recebemos uma solicitação de redefinição de senha para a sua conta.')
+            ->subject('Redefinição de Password')
+            ->line('Você está a receber este e-mail porque recebemos uma solicitação de redefinição de password para a sua conta.')
             ->action('Redefinir Senha', $resetUrl)
             ->line('Este link de redefinição de senha expira em 60 minutos.')
-            ->line('Se você não solicitou uma redefinição de senha, nenhuma ação adicional é necessária.');
+            ->line('Se você não solicitou uma redefinição de password, nenhuma ação adicional é necessária.');
     }
 
     /**
