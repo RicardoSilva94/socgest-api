@@ -11,7 +11,6 @@ class Entidade extends Model
 
     protected $fillable = [
         'nome',
-        'logotipo',
         'nif',
         'email',
         'telefone',

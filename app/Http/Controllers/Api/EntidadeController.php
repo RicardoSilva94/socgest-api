@@ -37,12 +37,10 @@ class EntidadeController extends Controller
      */
     public function store(Request $request)
     {
-
         // Validar os dados manualmente
         try {
             $validatedData = $request->validate([
                 'nome' => 'required|string|max:255',
-                'logotipo' => 'nullable|image',
                 'nif' => 'required|string|max:9|unique:entidades,nif',
                 'email' => 'required|email|unique:entidades,email',
                 'telefone' => 'nullable|string|max:20',
@@ -70,12 +68,6 @@ class EntidadeController extends Controller
                 return response()->json([
                     'message' => 'Você já possui uma entidade associada. Não é permitido criar mais de uma.',
                 ], 403);
-            }
-
-            // Processar o logotipo, se houver
-            if ($request->hasFile('logotipo')) {
-                $logotipoPath = $request->file('logotipo')->store('logotipos', 'public');
-                $validatedData['logotipo'] = $logotipoPath;
             }
 
             // Adicionar o user_id aos dados validados
@@ -132,24 +124,19 @@ class EntidadeController extends Controller
      */
     public function update(UpdateentidadeRequest $request, entidade $entidade)
     {
+        Log::info('Atualizando a entidade: ' . $entidade->id);
+        Log::info('Dados recebidos no backend: ' . json_encode($request->all()));
+
         try {
             // Valida os dados da requisição
             $validatedData = $request->validated();
 
             // Processa o upload do logotipo se houver
-            if ($request->hasFile('logotipo')) {
-                // Opcional: Excluir o logotipo antigo se existir
-                if ($entidade->logotipo) {
-                    Storage::disk('public')->delete($entidade->logotipo);
-                }
 
-                $logotipoPath = $request->file('logotipo')->store('logotipos', 'public');
-                $validatedData['logotipo'] = $logotipoPath;
-            }
-
+            Log::info('Dados antes da atualização: ' . json_encode($entidade->toArray()));
             // Atualiza a entidade com os dados validados
             $entidade->update($validatedData);
-
+            Log::info('Dados após a atualização: ' . json_encode($entidade->toArray()));
             // Retorna a entidade atualizada
             return response()->json([
                 'message' => 'Entidade atualizada com sucesso!',
@@ -179,11 +166,6 @@ class EntidadeController extends Controller
     public function destroy(entidade $entidade)
     {
         try {
-            // Opcional: Excluir o logotipo associado se existir
-            if ($entidade->logotipo) {
-                Storage::disk('public')->delete($entidade->logotipo);
-            }
-
             // Exclui a entidade
             $entidade->delete();
 

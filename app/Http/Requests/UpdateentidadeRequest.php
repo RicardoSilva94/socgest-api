@@ -27,7 +27,6 @@ class UpdateentidadeRequest extends FormRequest
 
         return [
             'nome' => 'sometimes|required|string|max:255',
-            'logotipo' => 'sometimes|nullable|image',
             'nif' => [
                 'sometimes',
                 'required',
