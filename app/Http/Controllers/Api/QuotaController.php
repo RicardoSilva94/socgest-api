@@ -19,7 +19,7 @@ class QuotaController extends Controller
 
         // Verifica se o user tem uma entidade associada
         if (!$user->entidade) {
-            return response()->json(['error' => 'Usuário não tem uma entidade associada.'], 403);
+            return response()->json(['error' => 'O utilizador não tem uma entidade associada.'], 403);
         }
 
         // Validação dos dados
@@ -85,7 +85,6 @@ class QuotaController extends Controller
      */
     public function index()
     {
-
         // Obtém o utilizador autenticado
         $user = auth()->user();
 
@@ -96,15 +95,18 @@ class QuotaController extends Controller
             ], 404);
         }
 
-        // Obtém as quotas associadas à entidade do user
+        // Obtém as quotas associadas à entidade do user e inclui o nome do sócio
         $quotas = Quota::whereHas('socio', function ($query) use ($user) {
             $query->where('entidade_id', $user->entidade->id);
-        })->get();
+        })
+            ->with('socio')  // Inclui os dados do sócio
+            ->get();
 
         return response()->json([
             'quotas' => $quotas
         ], 200);
     }
+
 
     /**
      * Show the form for creating a new resource.
