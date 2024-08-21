@@ -14,11 +14,12 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $entidade = $this->whenLoaded('entidade');
         return [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'entidade' => new EntidadeResource($this->whenLoaded('entidade')),
+            'entidade_id' => $entidade ? $entidade->id : null,
         ];
     }
 }

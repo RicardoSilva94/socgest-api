@@ -23,7 +23,8 @@ class UserController extends Controller
     }
     public function getCurrentUser(Request $request)
     {
-        return new UserResource($request->user());
+        $user = $request->user()->load('entidade');
+        return new UserResource($user);
     }
 
     /**
