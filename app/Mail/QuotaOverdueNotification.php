@@ -47,6 +47,7 @@ class QuotaOverdueNotification extends Mailable
                 'dueDate' => $dataPagamento->format('d/m/Y'),
                 'quotaDescricao' => $this->quota->descricao,
                 'entidadeNome' => $this->socio->entidade->nome,
+                'periodo' => $this->quota->periodo,
             ]);
     }
 
