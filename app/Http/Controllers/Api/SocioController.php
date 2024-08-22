@@ -53,9 +53,9 @@ class SocioController extends Controller
         // Validação dos dados recebidos
         $validatedData = $request->validate([
             'nome' => 'required|string|max:255',
-            'nif' => 'nullable|string|max:9|unique:socios,nif',
+            'nif' => 'nullable|string|max:9',
             'telefone' => 'nullable|string|max:20',
-            'email' => 'nullable|email|unique:socios,email',
+            'email' => 'nullable|email',
             'morada' => 'nullable|string|max:255',
             'estado' => 'nullable|string|max:255',
             'notas' => 'nullable|string',

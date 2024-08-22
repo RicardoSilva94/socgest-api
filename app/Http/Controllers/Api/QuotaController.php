@@ -16,7 +16,6 @@ class QuotaController extends Controller
 {
     public function quotasEmAtraso()
     {
-        Log::info('Método listarQuotasEmAtraso iniciado.');
         // Obtém o utilizador autenticado
         $user = Auth::user();
 

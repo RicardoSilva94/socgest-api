@@ -1,11 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Illuminate\Auth\Events\PasswordReset;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\EntidadeController;
 use App\Http\Controllers\Api\SocioController;
@@ -14,14 +10,6 @@ use App\Http\Controllers\Api\NotificacaoController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
-use App\Mail\QuotaOverdueNotification;
-use App\Models\Socio;
-use App\Models\Quota;
-use Illuminate\Support\Facades\Mail;
-
-//Route::get('/user', function (Request $request) {
-//    return $request->user();
-//})->middleware('auth:sanctum');
 
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);

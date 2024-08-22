@@ -25,7 +25,7 @@ class AuthController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        // Criação do novo usuário
+        // Criação do novo utilizador
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -36,7 +36,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'User registered successfully',
             'user' => $user,
-        ], 201); // 201 Created
+        ], 201);
     }
 
     public function login(Request $request)
