@@ -38,16 +38,25 @@ class NotificacaoController extends Controller
                 Log::info('Entidade carregada:', [
                     'entidade_id' => $socio->entidade->id,
                     'entidade_nome' => $socio->entidade->nome,
-
                 ]);
             } else {
                 Log::warning('Entidade não carregada para o sócio:', ['socio_id' => $socio->id]);
             }
 
             try {
+                // Enviar e-mail
                 Mail::to($socio->email)
                     ->cc($socio->entidade->email)
                     ->send(new QuotaOverdueNotification($socio, $quota));
+
+                // Armazenar notificação na base de dados
+                Notificacao::create([
+                    'quota_id' => $quota->id,
+                    'socio_id' => $socio->id,
+                    'mensagem' => 'Notificação sobre a quota em atraso.',
+                    'estado' => 'enviada',
+                    'data_envio' => now(),
+                ]);
             } catch (\Exception $e) {
                 Log::error("Erro ao enviar e-mail para {$socio->email}: " . $e->getMessage());
             }
@@ -55,9 +64,6 @@ class NotificacaoController extends Controller
 
         return response()->json(['message' => 'Notificações enviadas com sucesso.']);
     }
-
-
-
 
 
 

@@ -10,9 +10,43 @@ use App\Http\Resources\QuotaResource;
 use App\Models\Socio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class QuotaController extends Controller
 {
+    public function quotasEmAtraso()
+    {
+        Log::info('Método listarQuotasEmAtraso iniciado.');
+        // Obtém o utilizador autenticado
+        $user = Auth::user();
+
+        // Verifica se o utilizador tem uma entidade associada
+        if (!$user->entidade) {
+            return response()->json(['error' => 'O utilizador não tem uma entidade associada.'], 403);
+        }
+
+        // Obtém a data atual
+        $dataAtual = now();
+
+        // Obtém as quotas em atraso associadas à entidade do user e inclui o nome do sócio
+        $quotas = Quota::where('estado', 'Não Pago')
+            ->where('data_pagamento', '<', $dataAtual) // Verifica se a data de pagamento é anterior à data atual
+            ->whereHas('socio', function ($query) use ($user) {
+                $query->where('entidade_id', $user->entidade->id);
+            })
+            ->with('socio')  // Inclui os dados do sócio
+            ->get();
+
+        // Verifica se há quotas em atraso
+        if ($quotas->isEmpty()) {
+            return response()->json(['message' => 'Não há quotas em atraso.'], 200);
+        }
+
+        return response()->json([
+            'quotas' => $quotas
+        ], 200);
+    }
+
     public function emitirQuotas(Request $request)
     {
         $user = Auth::user();
@@ -182,5 +216,7 @@ class QuotaController extends Controller
             'message' => 'Quota eliminada com sucesso!'
         ], 200);
     }
+
+
 
 }

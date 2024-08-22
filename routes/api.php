@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Mail;
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/quotas/atraso', [QuotaController::class, 'quotasEmAtraso']);
     Route::post('/change-name', [UserController::class, 'changeName']);
     Route::post('/change-password', [UserController::class, 'changePassword']);
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -66,3 +67,4 @@ Route::post('/reset-password', [ResetPasswordController::class, 'reset'])
     ->name('password.update');
 
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'validateToken'])->name('password.reset');
+
