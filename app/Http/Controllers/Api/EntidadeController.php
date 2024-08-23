@@ -37,7 +37,7 @@ class EntidadeController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar os dados manualmente
+        // Validar os dados da requisição
         try {
             $validatedData = $request->validate([
                 'nome' => 'required|string|max:255',
@@ -99,7 +99,7 @@ class EntidadeController extends Controller
      */
     public function show($userId)
     {
-        // Busca a entidade associada ao usuário
+        // Procura a entidade associada ao utilizador
         $entidade = Entidade::where('user_id', $userId)->first();
 
         // Verifica se a entidade existe
@@ -181,4 +181,16 @@ class EntidadeController extends Controller
             ], 500);
         }
     }
+
+    public function getEntidadeId()
+    {
+        $user = Auth::user();
+
+        if ($user && $user->entidade) { // Assumindo que a entidade está relacionada com o user
+            return response()->json(['id' => $user->entidade->id]);
+        } else {
+            return response()->json(['message' => 'Entidade não encontrada'], 404);
+        }
+    }
+
 }

@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/notificacoes', [NotificacaoController::class, 'index']);
     Route::get('/notificacoes/{id}', [NotificacaoController::class, 'show']);
     Route::get('/user', [UserController::class, 'getCurrentUser']);
+    Route::get('/entidade-id', [EntidadeController::class, 'getEntidadeId']);
 });
 
 
