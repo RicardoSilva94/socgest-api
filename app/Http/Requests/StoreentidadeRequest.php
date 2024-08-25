@@ -24,7 +24,6 @@ class StoreentidadeRequest extends FormRequest
      */
     public function rules(): array
     {
-        Log::info('Aplicando regras de validação');
         return [
             'nome' => 'required|string|max:255',
             'logotipo' => 'nullable|image',

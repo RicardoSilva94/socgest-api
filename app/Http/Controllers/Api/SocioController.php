@@ -18,17 +18,15 @@ class SocioController extends Controller
      */
     public function index(Request $request)
     {
-        // Obtém o usuário logado
         $user = auth()->user();
 
-        // Obtém a entidade associada ao usuário
         $entidade = $user->entidade;
 
         if (!$entidade) {
             return response()->json(['error' => 'Você não tem uma entidade associada.'], 403);
         }
 
-        // Busca os sócios associados à entidade do usuário
+        // obtem os sócios associados à entidade do utilizador
         $socios = Socio::where('entidade_id', $entidade->id)->get();
 
         // Retorna a lista de sócios em formato JSON
@@ -105,7 +103,6 @@ class SocioController extends Controller
      */
     public function update(UpdatesocioRequest $request, socio $socio)
     {
-        // Verifica se o sócio pertence à entidade do usuário logado
         $user = auth()->user();
         $entidade = $user->entidade;
         if (!$entidade) {
@@ -127,7 +124,6 @@ class SocioController extends Controller
                 'sometimes',
                 'nullable',
                 'email',
-                Rule::unique('socios', 'email')->ignore($socio->id),
             ],
             'telefone' => 'nullable|string|max:20',
             'morada' => 'nullable|string|max:255',
@@ -187,7 +183,6 @@ class SocioController extends Controller
             // Exclui o sócio
             $socio->delete();
 
-            // Retorna uma resposta de sucesso
             return response()->json([
                 'message' => 'Sócio excluído com sucesso!'
             ], 200);

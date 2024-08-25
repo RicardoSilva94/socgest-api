@@ -3,14 +3,11 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Quota;
-use App\Models\Socio;
-use Illuminate\Support\Facades\Log;
+
 
 class QuotaOverdueNotification extends Mailable
 {
@@ -31,10 +28,6 @@ class QuotaOverdueNotification extends Mailable
     public function build()
     {
         $dataPagamento = \Carbon\Carbon::parse($this->quota->data_pagamento);
-
-        // Log para depuração
-        \Log::info('Sócio: ', ['nome' => $this->socio->nome, 'id' => $this->socio->id]);
-        \Log::info('Entidade: ', ['nome' => $this->socio->entidade->nome, 'id' => $this->socio->entidade->id]);
 
         return $this->from(config('mail.from.address'), config('mail.from.name'))
             ->subject('Quota em Atraso')

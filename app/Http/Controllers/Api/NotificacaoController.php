@@ -22,7 +22,7 @@ class NotificacaoController extends Controller
     {
         $quotaIds = $request->input('quota_ids', []);
 
-        // Buscar quotas com sócio e entidade relacionados
+        // obter quotas com sócio e entidade relacionados
         $quotas = Quota::whereIn('id', $quotaIds)
             ->where('estado', 'Não Pago')
             ->with('socio.entidade') // Carregar a entidade relacionada

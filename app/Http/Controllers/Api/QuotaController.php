@@ -10,7 +10,6 @@ use App\Http\Resources\QuotaResource;
 use App\Models\Socio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class QuotaController extends Controller
 {
