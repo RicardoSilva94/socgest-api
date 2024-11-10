@@ -9,6 +9,7 @@ class Quota extends Model
 {
     use HasFactory;
 
+    //Campos que podem ser preenchidos em massa
     protected $fillable = [
         'tipo',
         'periodo',
@@ -20,6 +21,7 @@ class Quota extends Model
         'socio_id',
     ];
 
+    //Converte este campo para uma instância de Carbon
     protected $dates = ['data_pagamento'];
 
     public function notificacoes(): \Illuminate\Database\Eloquent\Relations\HasMany

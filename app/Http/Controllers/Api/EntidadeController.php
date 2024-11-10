@@ -123,19 +123,14 @@ class EntidadeController extends Controller
      */
     public function update(UpdateentidadeRequest $request, entidade $entidade)
     {
-        Log::info('Atualizando a entidade: ' . $entidade->id);
-        Log::info('Dados recebidos no backend: ' . json_encode($request->all()));
 
         try {
             // Valida os dados da requisição
             $validatedData = $request->validated();
 
-            // Processa o upload do logotipo se houver
-
-            Log::info('Dados antes da atualização: ' . json_encode($entidade->toArray()));
             // Atualiza a entidade com os dados validados
             $entidade->update($validatedData);
-            Log::info('Dados após a atualização: ' . json_encode($entidade->toArray()));
+
             // Retorna a entidade atualizada
             return response()->json([
                 'message' => 'Entidade atualizada com sucesso!',

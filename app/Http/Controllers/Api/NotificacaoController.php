@@ -28,8 +28,6 @@ class NotificacaoController extends Controller
             ->with('socio.entidade') // Carregar a entidade relacionada
             ->get();
 
-        Log::info('Quotas carregadas:', $quotas->toArray());
-
         foreach ($quotas as $quota) {
             $socio = $quota->socio; // O sócio já tem a entidade carregada
 

@@ -214,7 +214,4 @@ class QuotaController extends Controller
             'message' => 'Quota eliminada com sucesso!'
         ], 200);
     }
-
-
-
 }
