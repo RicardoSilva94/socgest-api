@@ -70,7 +70,21 @@ class NotificacaoController extends Controller
      */
     public function index()
     {
-        return NotificacaoResource::collection(Notificacao::with(['quota', 'socio'])->get());
+        $user = auth()->user();
+
+        $entidade = $user->entidade;
+        if (!$entidade) {
+            return response()->json(['error' => 'Você não tem uma entidade associada.'], 403);
+        }
+
+        $notificacoes = Notificacao::with(['quota', 'socio'])
+            ->whereHas('socio', function ($query) use ($entidade) {
+                $query->where('entidade_id', $entidade->id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return NotificacaoResource::collection($notificacoes);
     }
 
     /**

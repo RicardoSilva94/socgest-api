@@ -40,7 +40,7 @@ class EntidadeController extends Controller
         try {
             $validatedData = $request->validate([
                 'nome' => 'required|string|max:255',
-                'nif' => 'required|string|max:9|unique:entidades,nif',
+                'nif' => 'required|string|max:9',
                 'email' => 'required|email|unique:entidades,email',
                 'telefone' => 'nullable|string|max:20',
                 'morada' => 'nullable|string|max:255',

@@ -19,6 +19,7 @@ class QuotaResource extends JsonResource
             'data_emissao' => $this->data_emissao,
             'data_pagamento' => $this->data_pagamento,
             'valor' => $this->valor,
+            'descricao' => $this->descricao,
             'estado' => $this->estado,
             'socio' => new SocioResource($this->whenLoaded('socio')), // Inclui o sócio associado
             'created_at' => $this->created_at,
