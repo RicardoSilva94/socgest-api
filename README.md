@@ -21,3 +21,4 @@ Certifique-se de ter as seguintes ferramentas instaladas no seu sistema antes de
 6. Configure o arquivo `.env` com as informações da sua base de dados (Username, Password, Nome da Base de Dados...)
 7. Execute o comando `php artisan migrate` para criar as tabelas na base de dados
 8. Execute o comando `php artisan serve` para iniciar o servidor local
+
