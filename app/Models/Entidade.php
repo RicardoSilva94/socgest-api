@@ -19,7 +19,7 @@ class Entidade extends Model
         'valor_quota',
         'user_id',
     ];
-    private mixed $nome;
+
 
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo

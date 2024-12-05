@@ -83,7 +83,7 @@ class EntidadeController extends Controller
         } catch (ValidationException $e) {
             Log::error('Erro de validação: ', $e->errors());
             return response()->json([
-                'message' => 'Erro de validação',
+                'message' => 'Erro de validação. Note que todos os campos são de preenchimento obrigatório.',
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {

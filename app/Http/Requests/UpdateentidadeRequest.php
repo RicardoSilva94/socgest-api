@@ -38,7 +38,6 @@ class UpdateentidadeRequest extends FormRequest
                 'sometimes',
                 'required',
                 'email',
-                Rule::unique('entidades', 'email')->ignore($entidadeId),
             ],
             'telefone' => 'sometimes|nullable|string|max:20',
             'morada' => 'sometimes|nullable|string|max:255',
@@ -57,7 +56,6 @@ class UpdateentidadeRequest extends FormRequest
                 'sometimes',
                 'required',
                 'exists:users,id',
-                Rule::unique('entidades', 'user_id')->ignore($entidadeId),
             ],
         ];
     }
