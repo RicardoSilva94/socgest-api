@@ -88,7 +88,6 @@ class QuotaController extends Controller
     {
         // Verifica se a quota existe
         $quota = Quota::find($id);
-
         if (!$quota) {
             return response()->json([
                 'error' => 'Quota não encontrada.'
@@ -110,6 +109,43 @@ class QuotaController extends Controller
         }
     }
 
+    public function emitirQuotaIndividual(StorequotaRequest $request)
+    {
+        $user = Auth::user();
+
+        if (!$user->entidade) {
+            return response()->json(['error' => 'O utilizador não tem uma entidade associada.'], 403);
+        }
+
+        $socio = Socio::find($request->input('socio_id'));
+
+        if (!$socio) {
+            return response()->json(['error' => 'Sócio não encontrado.'], 404);
+        }
+
+        try {
+            $quota = Quota::create([
+                'socio_id' => $socio->id,
+                'tipo' => $request->input('tipo'),
+                'periodo' => $request->input('periodo'),
+                'descricao' => $request->input('descricao'),
+                'valor' => $request->input('valor'),
+                'estado' => 'Não Pago',
+                'data_emissao' => now()->toDateString(),
+                'data_pagamento' => $request->input('data_pagamento'),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Erro ao emitir a quota individual.',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'Quota individual emitida com sucesso!',
+            'quota' => $quota
+        ], 201);
+    }
 
 
     /**

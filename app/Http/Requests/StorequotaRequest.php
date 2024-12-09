@@ -11,7 +11,7 @@ class StorequotaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class StorequotaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'socio_id' => 'required|exists:socios,id',
+            'tipo' => 'required|in:Anual,Mensal',
+            'periodo' => 'nullable|string|max:255',
+            'descricao' => 'nullable|string|max:500',
+            'valor' => 'required|numeric|min:0',
+            'data_pagamento' => 'required|date|after_or_equal:today',
         ];
     }
 }
