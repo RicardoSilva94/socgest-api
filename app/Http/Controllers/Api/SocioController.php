@@ -132,7 +132,6 @@ class SocioController extends Controller
                 'nullable',
                 'string',
                 'max:9',
-                Rule::unique('socios', 'nif')->ignore($socio->id),
             ],
             'num_socio' => [
                 'sometimes',

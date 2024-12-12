@@ -32,11 +32,9 @@ class UpdateentidadeRequest extends FormRequest
                 'required',
                 'string',
                 'max:9',
-                Rule::unique('entidades', 'nif')->ignore($entidadeId),
             ],
             'email' => [
                 'sometimes',
-                'required',
                 'email',
             ],
             'telefone' => 'sometimes|nullable|string|max:20',
